@@ -74,6 +74,8 @@ public class Shoot : MonoBehaviour
 
     private AudioSource audioSource=null;
 
+    private WeaponManager wm; //to check if you can shoot
+                              //if the weapon is changing, you cant
     #endregion
 
     #region Monobehaviour Calls
@@ -83,6 +85,11 @@ public class Shoot : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         m_TimeSinceLastShot = m_TimeBetweenShots;
         audioSource.clip = m_ShootSound;
+        wm = GetComponentInParent<WeaponManager>();
+    }
+
+    void OnEnable() {
+        m_IsShooting = false;
     }
     /// <summary>
     /// En el método Update se consultará al Input si se ha pulsado el botón de disparo
@@ -109,7 +116,6 @@ public class Shoot : MonoBehaviour
                 }
                 else
                 {
-                    audioSource.Play();
                     ShootRay();
                 }
 
@@ -120,15 +126,18 @@ public class Shoot : MonoBehaviour
             if (!m_IsShooting)
             {
                 m_IsShooting = true;
-
                 // ## TO-DO 7 Poner sonido de disparo.
+                audioSource.Play();
 
             }
 		}
         else if (m_IsShooting)
         {
             m_IsShooting = false;
-            audioSource.Stop();
+            if (m_IsAutomatic)
+            {
+                audioSource.Stop();
+            }
             // ## TO-DO 8 Parar sonido de disparo.
 
         }
@@ -183,7 +192,7 @@ public class Shoot : MonoBehaviour
 
 
         //Debug.Log("¡Pollo!");
-	}
+    }
 
     /// <summary>
     /// Disparamos usando un rayo.

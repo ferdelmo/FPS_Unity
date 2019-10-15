@@ -92,7 +92,6 @@ public class WeaponManager : MonoBehaviour {
         m_ActiveWeapon = m_Weapons[index];
         m_ActiveWeapon.SetActive(true);
         m_ActiveWeaponIndex = index;
-        //anim.SetBool("Change", false);
 
     }
 }
