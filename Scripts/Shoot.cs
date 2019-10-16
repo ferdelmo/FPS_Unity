@@ -114,12 +114,12 @@ public class Shoot : MonoBehaviour
 
             if (!m_IsAutomatic)
             {
-                rec.addRecoil(20);
+                rec.addRecoil(15);
                 ShootProjectile();
             }
             else
             {
-                rec.addRecoil(10);
+                rec.addRecoil(5);
                 ShootRay();
             }
 

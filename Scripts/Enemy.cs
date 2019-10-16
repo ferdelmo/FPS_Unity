@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public float sp=10;
     public int N=10;
     public float m_TimeBetweenShots = 2;
-    public Rigidbody m_projectile = null;
+    public GameObject m_projectile = null;
     public Transform m_ShootPoint;
     public double t = 0;
 
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
         m_TimeSinceLastShot += Time.deltaTime;
         if (CanShoot() && t>0)
         {
-            ShootProjectile(sp/(float)t*m_projectile.mass);
+            ShootProjectile();
             m_TimeSinceLastShot = 0;
         }
 
@@ -62,21 +62,20 @@ public class Enemy : MonoBehaviour
         return m_TimeSinceLastShot >= m_TimeBetweenShots;
     }
 
-    private void ShootProjectile(float force)
+    private void ShootProjectile()
     {
         // TO-DO 2
         // 1.- Instanciar el proyectil pasado como variable pública de la clase, en la posición y rotación del punto de disparo "m_projectile"
         // 1.2.- Guardarse el objeto devuelto en una variable de tipo Rigidbody
         // 2.- Asignar una velocidad inicial en función de m_Velocity al campo velocity del rigidBody. La dirección será la del m_ShootPoint. Una vez que esté orientado el pollo simiplemente hay que añadirle velocidad.
         // 3.- Ignorar las colisiones entre nuestro proyectil y nosotros mismos
-        Rigidbody project = Instantiate(m_projectile, m_ShootPoint.transform.position,
-                            m_ShootPoint.rotation) as Rigidbody;
-        project.velocity = project.transform.forward * force;
+        GameObject project = Instantiate(m_projectile, m_ShootPoint.transform.position,
+                            m_ShootPoint.rotation);
         Collider projectileCollider = project.GetComponent<Collider>();
         Collider mycollider = transform.root.GetComponent<Collider>();
         Physics.IgnoreCollision(projectileCollider, mycollider);
 
-
+        project.GetComponent<ProjectileMov>().vel = sp;
         //Debug.Log("¡Pollo!");
     }
 
