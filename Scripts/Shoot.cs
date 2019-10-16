@@ -58,6 +58,8 @@ public class Shoot : MonoBehaviour
     /// Sonido del arma.
     /// </summary>
     public AudioClip m_ShootSound;
+
+    public bool IA = false;
     #endregion
 
     #region Non exposed fields
@@ -76,6 +78,7 @@ public class Shoot : MonoBehaviour
 
     private WeaponManager wm; //to check if you can shoot
                               //if the weapon is changing, you cant
+    private Recoil rec;
     #endregion
 
     #region Monobehaviour Calls
@@ -86,6 +89,7 @@ public class Shoot : MonoBehaviour
         m_TimeSinceLastShot = m_TimeBetweenShots;
         audioSource.clip = m_ShootSound;
         wm = GetComponentInParent<WeaponManager>();
+        rec = GetComponentInParent<Recoil>();
     }
 
     void OnEnable() {
@@ -94,7 +98,7 @@ public class Shoot : MonoBehaviour
     /// <summary>
     /// En el método Update se consultará al Input si se ha pulsado el botón de disparo
     /// </summary>
-    void Update () {
+    void Update() {
 
         // Será necesario llevar cuenta del tiempo transcurrido
 
@@ -102,26 +106,26 @@ public class Shoot : MonoBehaviour
         // Para ello, habrá que sumarle el tiempo de ejecución del anterior frame
 
         m_TimeSinceLastShot += Time.deltaTime;
-        if (GetFireButton())
-		{
-            if (CanShoot())
+        if (CanShoot() && GetFireButton())
+        {
+
+            // ## TO-DO 5 - En función de si hay proyectil o no, usar la función de disparo
+            // con proyectil, o la de disparo con rayo ## 
+
+            if (!m_IsAutomatic)
             {
-                // ## TO-DO 5 - En función de si hay proyectil o no, usar la función de disparo
-                // con proyectil, o la de disparo con rayo ## 
-
-                if (!m_IsAutomatic)
-                {
-                    
-                    ShootProjectile();
-                }
-                else
-                {
-                    ShootRay();
-                }
-
-                // ## TO-DO 6 - Reiniciar el contador m_TimeSinceLastShot ## 
-                m_TimeSinceLastShot = 0;
+                rec.addRecoil(20);
+                ShootProjectile();
             }
+            else
+            {
+                rec.addRecoil(10);
+                ShootRay();
+            }
+
+            // ## TO-DO 6 - Reiniciar el contador m_TimeSinceLastShot ## 
+            m_TimeSinceLastShot = 0;
+
 
             if (!m_IsShooting)
             {
@@ -130,13 +134,16 @@ public class Shoot : MonoBehaviour
                 audioSource.Play();
 
             }
-		}
-        else if (m_IsShooting)
+        }
+        else
         {
-            m_IsShooting = false;
-            if (m_IsAutomatic)
+            if (!GetFireButton() || wm.IsChanging)
             {
-                audioSource.Stop();
+                m_IsShooting = false;
+                if (m_IsAutomatic)
+                {
+                    audioSource.Stop();
+                }
             }
             // ## TO-DO 8 Parar sonido de disparo.
 
@@ -154,7 +161,7 @@ public class Shoot : MonoBehaviour
 	{
         //  ## TO-DO 8 - Comprobar si puedo disparar #
         
-        return m_TimeSinceLastShot>=m_TimeBetweenShots;
+        return m_TimeSinceLastShot>=m_TimeBetweenShots && !wm.IsChanging;
 	}
 	
     /// <summary>

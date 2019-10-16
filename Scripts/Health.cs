@@ -9,11 +9,23 @@ public class Health : MonoBehaviour {
     public float m_health;
     private float m_CurrentHealth;
 
+    private Vector3 velocity;
+    private Vector3 lastPos;
+    public Vector3 Velocity { 
+        get { return velocity; }
+    }
     // Use this for initialization
 
 
     void Start () {
         ResetHealth();
+        lastPos = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        velocity = (transform.position - lastPos) / Time.deltaTime;
+        lastPos = transform.position;
     }
 
     public float CurrentHelth

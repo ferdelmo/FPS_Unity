@@ -23,11 +23,22 @@ public class WeaponManager : MonoBehaviour {
 	/// Índice del arma por defecto en el manager
 	/// </summary>
 	public int m_DefaultWeaponIndex = 0;
+
     private int m_ActiveWeaponIndex = 0;
-	/// <summary>
-	/// Ininicializaciones
-	/// </summary>
-	void Start () {
+
+    private bool isChanging = false;
+
+
+    public bool IsChanging
+    {
+        get { return isChanging;  }
+        set { isChanging = value;  }
+    }
+
+    /// <summary>
+    /// Ininicializaciones
+    /// </summary>
+    void Start () {
 
         // ## TO-DO 1 - Activar el primer arma de la lista, y establecerlo como arma activa. Pista: m_Weapons[0] ##
         int index = 0;
@@ -54,26 +65,33 @@ public class WeaponManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
             // ## TO-DO 3 - Llamar a ManageWeapon con el índice adecuado (0)
-            anim.SetInteger("Index", 0);
-            anim.SetBool("Change", true);
+
+            ChangeAnimation(0);
 
         }
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
             // ## TO-DO 4 - Llamar a ManageWeapon con el índice adecuado (1)
-            anim.SetInteger("Index", 1);
-            anim.SetBool("Change", true);
+
+            ChangeAnimation(1);
         }
         else if(Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            anim.SetInteger("Index",(anim.GetInteger("Index") + 1) % m_Weapons.Count);
-            anim.SetBool("Change", true);
+
+            ChangeAnimation((anim.GetInteger("Index") + 1) % m_Weapons.Count);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            anim.SetInteger("Index", (anim.GetInteger("Index") - 1) % m_Weapons.Count);
-            anim.SetBool("Change", true);
+            ChangeAnimation((anim.GetInteger("Index") - 1) % m_Weapons.Count);
         }
+    }
+
+    private void ChangeAnimation(int index)
+    {
+        isChanging = true;
+        if (index < 0) { index = m_Weapons.Count - 1; }
+        anim.SetInteger("Index", index);
+        anim.SetBool("Change", true);
     }
 
     // Dicho número indicará el índice del arma que se quiere activar/desacivar
@@ -87,7 +105,6 @@ public class WeaponManager : MonoBehaviour {
         // Pista: Activar/Desactivar = m_ActiveWeapon.SetActiveRec...
         // ---
         // Actualizar m_ActiveWeapon
-        if (index < 0) { index = m_Weapons.Count - 1; }
         m_ActiveWeapon.SetActive(false);
         m_ActiveWeapon = m_Weapons[index];
         m_ActiveWeapon.SetActive(true);
