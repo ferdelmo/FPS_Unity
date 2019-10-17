@@ -8,6 +8,7 @@ public class Health : MonoBehaviour {
     /// </summary>
     public float m_health;
     private float m_CurrentHealth;
+    public ParticleSystem bloodSplatter;
 
     private Vector3 velocity;
     private Vector3 lastPos;
@@ -43,8 +44,12 @@ public class Health : MonoBehaviour {
     /// </summary>
     /// <param name="amount"></param>
     public void Damage(float amount)
-    {
+    {   
         ///  // ## TO-DO 1 si la salud inicial es menor que 0 enviar mensaje void OnDeath() por si a alguien le interesa..
+        if(this.tag == "Enemy")
+        {
+            bloodSplatter.Emit(1);
+        }
         m_CurrentHealth -= amount;
         if(m_CurrentHealth <= 0)
         {

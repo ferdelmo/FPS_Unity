@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-// Contiene la declaración de la clase Shoot, encargada de la mecánica de disparo.
+// Contiene la declaraciï¿½n de la clase Shoot, encargada de la mecï¿½nica de disparo.
 // Permite dos formas de disparo exclusivas:
 //      - Proyectiles
 //      - Raycast
@@ -11,12 +11,13 @@ public class Shoot : MonoBehaviour
     #region Exposed fields
 
     /// <summary>
-    /// Proyectil a disparar. Si no está asignado, la mecánica de disparo utilizará
+    /// Proyectil a disparar. Si no estï¿½ asignado, la mecï¿½nica de disparo utilizarï¿½
     /// Raycast para calcular los puntos de impacto
     /// </summary>
     /// 
     public Rigidbody m_projectile = null;
 
+    public GameObject bulletHole;
     /// <summary>
     /// Velocidad inicial del proyectil que se dispara
     /// </summary>
@@ -33,9 +34,11 @@ public class Shoot : MonoBehaviour
 	public float m_TimeBetweenShots = 0.25f;
 	
 	/// <summary>
-	/// Booleano para indicar si el arma es automática
+	/// Booleano para indicar si el arma es automï¿½tica
 	/// </summary>
 	public bool m_IsAutomatic = false;
+
+    public bool m_IsShotgun = false;
 
     /// <summary>
     /// Particulas que saltan cuando un arma sin proyectil acierta en algo.
@@ -60,17 +63,21 @@ public class Shoot : MonoBehaviour
     public AudioClip m_ShootSound;
 
     public bool IA = false;
+
+    public float m_MachineGunDamage = 10;
+
+    public float m_ShotgunDamage = 20;
     #endregion
 
     #region Non exposed fields
 
     /// <summary>
-    /// Tiempo transcurrido desde el último disparo
+    /// Tiempo transcurrido desde el ï¿½ltimo disparo
     /// </summary>
     private float m_TimeSinceLastShot = 0;
 
     /// <summary>
-    /// Indica si estamos disparando (util en modo automático).
+    /// Indica si estamos disparando (util en modo automï¿½tico).
     /// </summary>
     private bool m_IsShooting = false;
 
@@ -79,6 +86,8 @@ public class Shoot : MonoBehaviour
     private WeaponManager wm; //to check if you can shoot
                               //if the weapon is changing, you cant
     private Recoil rec;
+
+    
     #endregion
 
     #region Monobehaviour Calls
@@ -96,26 +105,32 @@ public class Shoot : MonoBehaviour
         m_IsShooting = false;
     }
     /// <summary>
-    /// En el método Update se consultará al Input si se ha pulsado el botón de disparo
+    /// En el mï¿½todo Update se consultarï¿½ al Input si se ha pulsado el botï¿½n de disparo
     /// </summary>
     void Update() {
 
-        // Será necesario llevar cuenta del tiempo transcurrido
+        // Serï¿½ necesario llevar cuenta del tiempo transcurrido
 
         //  ## TO-DO 4 - Actualizar el contador m_TimeSinceLastShot ## 
-        // Para ello, habrá que sumarle el tiempo de ejecución del anterior frame
+        // Para ello, habrï¿½ que sumarle el tiempo de ejecuciï¿½n del anterior frame
 
         m_TimeSinceLastShot += Time.deltaTime;
         if (CanShoot() && GetFireButton())
         {
 
-            // ## TO-DO 5 - En función de si hay proyectil o no, usar la función de disparo
+            // ## TO-DO 5 - En funciï¿½n de si hay proyectil o no, usar la funciï¿½n de disparo
             // con proyectil, o la de disparo con rayo ## 
 
-            if (!m_IsAutomatic)
+            if (!m_IsAutomatic && !m_IsShotgun)
             {
                 rec.addRecoil(15);
                 ShootProjectile();
+            }
+            else if (!m_IsAutomatic && m_IsShotgun)
+            {
+                rec.addRecoil(10);
+                ShootShotgun();
+                //ShootProjectile();
             }
             else
             {
@@ -153,7 +168,7 @@ public class Shoot : MonoBehaviour
 	
 	// 
     /// <summary>
-    /// En esta función comprobamos si el tiempo que ha pasado desde la última vez que disparamos
+    /// En esta funciï¿½n comprobamos si el tiempo que ha pasado desde la ï¿½ltima vez que disparamos
     /// es suficiente para que nos dejen volver a disparar 
     /// </summary>
     /// <returns>true si puede disparar y falso si no puede.</returns>
@@ -165,12 +180,12 @@ public class Shoot : MonoBehaviour
 	}
 	
     /// <summary>
-    /// Devuelve si se ha pulsado el botón de disparo
+    /// Devuelve si se ha pulsado el botï¿½n de disparo
     /// </summary>
     /// <returns>true si puede disparar y falso si no puede.</returns>
 	private bool GetFireButton()
 	{
-        //Obtener el botón de disparo. Si es automático se pulsará GetButton y si no, GetButtonDown. El botón que usamoremos es "Fire"
+        //Obtener el botï¿½n de disparo. Si es automï¿½tico se pulsarï¿½ GetButton y si no, GetButtonDown. El botï¿½n que usamoremos es "Fire"
         //  ## TO-DO 1 ## 
         if (m_IsAutomatic)
             return Input.GetButton("Fire1");
@@ -185,9 +200,9 @@ public class Shoot : MonoBehaviour
 	private void ShootProjectile()
 	{
         // TO-DO 2
-        // 1.- Instanciar el proyectil pasado como variable pública de la clase, en la posición y rotación del punto de disparo "m_projectile"
+        // 1.- Instanciar el proyectil pasado como variable pï¿½blica de la clase, en la posiciï¿½n y rotaciï¿½n del punto de disparo "m_projectile"
         // 1.2.- Guardarse el objeto devuelto en una variable de tipo Rigidbody
-        // 2.- Asignar una velocidad inicial en función de m_Velocity al campo velocity del rigidBody. La dirección será la del m_ShootPoint. Una vez que esté orientado el pollo simiplemente hay que añadirle velocidad.
+        // 2.- Asignar una velocidad inicial en funciï¿½n de m_Velocity al campo velocity del rigidBody. La direcciï¿½n serï¿½ la del m_ShootPoint. Una vez que estï¿½ orientado el pollo simiplemente hay que aï¿½adirle velocidad.
         // 3.- Ignorar las colisiones entre nuestro proyectil y nosotros mismos
         Rigidbody project = Instantiate(m_projectile, m_ShootPoint.transform.position, 
                             m_ShootPoint.rotation) as Rigidbody;
@@ -196,9 +211,8 @@ public class Shoot : MonoBehaviour
         Collider mycollider = transform.root.GetComponent<Collider>();
         Physics.IgnoreCollision(projectileCollider, mycollider);
         audioSource.PlayOneShot(m_ShootSound);
-
-
-        //Debug.Log("¡Pollo!");
+        
+        //Debug.Log("ï¿½Pollo!");
     }
 
     /// <summary>
@@ -206,21 +220,90 @@ public class Shoot : MonoBehaviour
     /// </summary>
     private void ShootRay()
     {
-        // ## TO-DO 9 - Función que dispara con rayos ## 
-        // 1.- Lanzar un rayo utlizando para ello el módulo de física -> pista Physics.Ra...
+        // ## TO-DO 9 - Funciï¿½n que dispara con rayos ## 
+        // 1.- Lanzar un rayo utlizando para ello el mï¿½dulo de fï¿½sica -> pista Physics.Ra...
         // 2.- Aplicar una fuerza en el punto de impacto.
         // 3.- Colocar particulas de chispas en el punto de impacto -> pista Instanciamos pero no nos preocupasmo del destroy porque el asset puede autodestruirse (componente particle animator).
         m_Shoot.Emit(1);
         RaycastHit hit;
         if(Physics.Raycast(m_ShootPoint.position, m_ShootPoint.forward, out hit))
         {
+            if(hit.transform.tag == "Enemy")
+            {
+                Debug.Log("Enemy hit");
+                hit.collider.SendMessage("Damage", m_MachineGunDamage);
+            }
+            else
+            {
+                Instantiate(bulletHole, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal));
+            }
             GameObject chispitas = Instantiate(m_Sparkles, hit.point, Quaternion.identity) as GameObject;
-            chispitas.GetComponent<ParticleSystem>().Emit(2);
+            chispitas.GetComponent<ParticleSystem>().Emit(1);
             Destroy(chispitas, 0.5f);
+           
+
         }
     }
 
-    //## TO-DO 3 Mostrar un puntero laser con la dirección de disparo.
+    private void ShootShotgun()
+    {
+        Debug.Log("ShootShotgun");
+        //the cone where the rays are generated
+        float h = 5; //height
+        float r = 0.3f; //base radius
+        RaycastHit hit1, hit2, hit3;
+        if(Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit1)){
+            if (hit1.transform.tag == "Enemy")
+            {
+                Debug.Log("Enemy hit");
+                hit1.collider.SendMessage("Damage", m_ShotgunDamage);
+            }
+            else
+            {
+                Instantiate(bulletHole, hit1.point, Quaternion.FromToRotation(Vector3.forward, hit1.normal));
+            }
+            GameObject chispitas = Instantiate(m_Sparkles, hit1.point, Quaternion.identity) as GameObject;
+            chispitas.GetComponent<ParticleSystem>().Emit(1);
+            Destroy(chispitas, 0.5f);
+
+        }
+        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit2))
+        {
+            if (hit2.transform.tag == "Enemy")
+            {
+                Debug.Log("Enemy hit");
+                hit2.collider.SendMessage("Damage", m_ShotgunDamage);
+            }
+            else
+            {
+                Instantiate(bulletHole, hit2.point, Quaternion.FromToRotation(Vector3.forward, hit2.normal));
+            }
+            GameObject chispitas = Instantiate(m_Sparkles, hit2.point, Quaternion.identity) as GameObject;
+            chispitas.GetComponent<ParticleSystem>().Emit(1);
+            Destroy(chispitas, 0.5f);
+            
+
+        }
+        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit3))
+        {
+            if (hit3.transform.tag == "Enemy")
+            {
+                Debug.Log("Enemy hit");
+                hit3.collider.SendMessage("Damage", m_ShotgunDamage);
+            }
+            else
+            {
+                Instantiate(bulletHole, hit3.point, Quaternion.FromToRotation(Vector3.forward, hit3.normal));
+            }
+            GameObject chispitas = Instantiate(m_Sparkles, hit3.point, Quaternion.identity) as GameObject;
+            chispitas.GetComponent<ParticleSystem>().Emit(1);
+            Destroy(chispitas, 0.5f);
+            
+
+        }
+    }
+
+    //## TO-DO 3 Mostrar un puntero laser con la direcciï¿½n de disparo.
 
     private void OnDrawGizmos()
     {

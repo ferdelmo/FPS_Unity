@@ -17,10 +17,17 @@ public class Death : MonoBehaviour {
 
     public virtual void OnDeath()
     {
-
-        m_audio.clip = m_deathSound;
-        m_audio.Play();
-        // TO-DO 2 Respaunear usando el GameManager con el mensaje RespawnPlayer.
-        m_GameManager.SendMessage("RespawnPlayer");
+        if(gameObject.tag == "Player")
+        {
+            m_audio.clip = m_deathSound;
+            m_audio.Play();
+            // TO-DO 2 Respaunear usando el GameManager con el mensaje RespawnPlayer.
+            m_GameManager.SendMessage("RespawnPlayer");
+        }
+        else if(gameObject.tag == "Enemy")
+        {
+            Destroy(gameObject);
+        }
+        
     }
 }
