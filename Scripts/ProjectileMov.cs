@@ -27,6 +27,7 @@ public class ProjectileMov : MonoBehaviour
         }
 
     }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         hit.gameObject.SendMessage("Damage", dmg);

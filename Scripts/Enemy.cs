@@ -7,10 +7,12 @@ public class Enemy : MonoBehaviour
 {
     public float sp=10;
     public int N=10;
+    public float range = 20;
     public float m_TimeBetweenShots = 2;
     public GameObject m_projectile = null;
     public Transform m_ShootPoint;
-    public double t = 0;
+    public AudioSource audio;
+    private double t = 0;
 
     private Health player;
     private FIFO velocities;
@@ -20,6 +22,7 @@ public class Enemy : MonoBehaviour
     private float m_TimeSinceLastShot = 0;
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         velocities = new FIFO(N);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
     }
@@ -59,7 +62,7 @@ public class Enemy : MonoBehaviour
     {
         //  ## TO-DO 8 - Comprobar si puedo disparar #
 
-        return m_TimeSinceLastShot >= m_TimeBetweenShots;
+        return m_TimeSinceLastShot >= m_TimeBetweenShots && (player.gameObject.transform.position - transform.position).magnitude < range;
     }
 
     private void ShootProjectile()
@@ -69,6 +72,7 @@ public class Enemy : MonoBehaviour
         // 1.2.- Guardarse el objeto devuelto en una variable de tipo Rigidbody
         // 2.- Asignar una velocidad inicial en función de m_Velocity al campo velocity del rigidBody. La dirección será la del m_ShootPoint. Una vez que esté orientado el pollo simiplemente hay que añadirle velocidad.
         // 3.- Ignorar las colisiones entre nuestro proyectil y nosotros mismos
+        audio.Play();
         GameObject project = Instantiate(m_projectile, m_ShootPoint.transform.position,
                             m_ShootPoint.rotation);
         Collider projectileCollider = project.GetComponent<Collider>();

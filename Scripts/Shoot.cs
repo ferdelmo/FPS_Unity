@@ -226,7 +226,7 @@ public class Shoot : MonoBehaviour
         // 3.- Colocar particulas de chispas en el punto de impacto -> pista Instanciamos pero no nos preocupasmo del destroy porque el asset puede autodestruirse (componente particle animator).
         m_Shoot.Emit(1);
         RaycastHit hit;
-        if(Physics.Raycast(m_ShootPoint.position, m_ShootPoint.forward, out hit))
+        if(Physics.Raycast(m_ShootPoint.position, m_ShootPoint.forward, out hit, m_ShootRange))
         {
             if(hit.transform.tag == "Enemy")
             {
@@ -251,8 +251,9 @@ public class Shoot : MonoBehaviour
         //the cone where the rays are generated
         float h = 5; //height
         float r = 0.3f; //base radius
+        m_Shoot.Emit(1);
         RaycastHit hit1, hit2, hit3;
-        if(Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit1)){
+        if(Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit1, m_ShootRange)){
             if (hit1.transform.tag == "Enemy")
             {
                 Debug.Log("Enemy hit");
@@ -267,7 +268,7 @@ public class Shoot : MonoBehaviour
             Destroy(chispitas, 0.5f);
 
         }
-        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit2))
+        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit2, m_ShootRange))
         {
             if (hit2.transform.tag == "Enemy")
             {
@@ -284,7 +285,7 @@ public class Shoot : MonoBehaviour
             
 
         }
-        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit3))
+        if (Physics.Raycast(m_ShootPoint.position, transform.TransformDirection(Random.Range(-r, r), Random.Range(-r, r), h).normalized, out hit3, m_ShootRange))
         {
             if (hit3.transform.tag == "Enemy")
             {
@@ -299,7 +300,6 @@ public class Shoot : MonoBehaviour
             chispitas.GetComponent<ParticleSystem>().Emit(1);
             Destroy(chispitas, 0.5f);
             
-
         }
     }
 
