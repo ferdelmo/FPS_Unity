@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 59b51eef6d7d6d743ba5af5a81632400
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: ABDOMEN
+    100002: CHEST
+    100004: HEAD
+    100006: HIP
+    100008: NECK1
+    100010: NECK2
+    100012: NECK3
+    100014: //RootNode
+    400000: ABDOMEN
+    400002: CHEST
+    400004: HEAD
+    400006: HIP
+    400008: NECK1
+    400010: NECK2
+    400012: NECK3
+    400014: //RootNode
+    2300000: ABDOMEN
+    2300002: CHEST
+    2300004: HEAD
+    2300006: HIP
+    2300008: NECK1
+    2300010: NECK2
+    2300012: NECK3
+    3300000: ABDOMEN
+    3300002: CHEST
+    3300004: HEAD
+    3300006: HIP
+    3300008: NECK1
+    3300010: NECK2
+    3300012: NECK3
+    4300000: ABDOMEN
+    4300002: CHEST
+    4300004: HEAD
+    4300006: HIP
+    4300008: NECK1
+    4300010: NECK2
+    4300012: NECK3
+    11100000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ABDOMENMat
+    second: {fileID: 2100000, guid: 470c28b3bdc86604bbfdd3c4c144937e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CHESTMat
+    second: {fileID: 2100000, guid: f7ad5ab5b6dc4834a9ea15f0a794895f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HEADMat
+    second: {fileID: 2100000, guid: 5c0744ddec4aaef44861bcf4a887968c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HIPMat
+    second: {fileID: 2100000, guid: a93f2196e19cc7444ad09164d80fbe6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NECK1Mat
+    second: {fileID: 2100000, guid: b11851b9e5421f241a70783892ed9c9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NECK2Mat
+    second: {fileID: 2100000, guid: 527e1d1b95673dd4eb7a46cbd010b4fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NECK3Mat
+    second: {fileID: 2100000, guid: 3177cd6cb2748fe4b9d26063e0f1e681, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 3
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
